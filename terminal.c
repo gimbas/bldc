@@ -288,6 +288,9 @@ void terminal_process_string(char *str) {
         commands_printf("                   MOTOR1   MOTOR2");
         commands_printf("Current          : %.1f     %.1f", (double)fault_vec[i].current, (double)fault_vec[i].current2);
         commands_printf("Current filtered : %.1f     %.1f", (double)fault_vec[i].current_filtered, (double)fault_vec[i].current_filtered2);
+        commands_printf("ABS current filt : %.1f     %.1f", (double)fault_vec[i].abs_current_filt, (double)fault_vec[i].abs_current_filt2);
+        commands_printf("iq               : %.1f     %.1f", (double)fault_vec[i].iq, (double)fault_vec[i].iq2);
+        commands_printf("id               : %.1f     %.1f", (double)fault_vec[i].id, (double)fault_vec[i].id2);
         commands_printf("Duty             : %.3f     %.3f", (double)fault_vec[i].duty, (double)fault_vec[i].duty2);
         commands_printf("RPM              : %.1f     %.1f", (double)fault_vec[i].rpm, (double)fault_vec[i].rpm2);
         commands_printf("Tacho            : %d       %d", fault_vec[i].tacho,fault_vec[i].tacho2);

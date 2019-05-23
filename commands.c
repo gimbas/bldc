@@ -277,307 +277,310 @@ void commands_process_packet(unsigned char *data, unsigned int len,
     break;
 
   case COMM_SET_MCCONF:
-    mcconf = *mc_interface_get_configuration();
-    mcconf2 = *mc_interface_get_configuration2();
+    if(len == 379)
+    {
+      mcconf = *mc_interface_get_configuration();
+      mcconf2 = *mc_interface_get_configuration2();
 
-    ind = 0;
-    mcconf.pwm_mode = data[ind++];
-    mcconf.comm_mode = data[ind++];
-    mcconf.motor_type = data[ind++];
-    mcconf.sensor_mode = data[ind++];
-    mcconf.l_current_max = buffer_get_float32_auto(data, &ind);
-    mcconf.l_current_min = buffer_get_float32_auto(data, &ind);
-    mcconf.l_in_current_max = buffer_get_float32_auto(data, &ind);
-    mcconf.l_in_current_min = buffer_get_float32_auto(data, &ind);
-    mcconf.l_abs_current_max = buffer_get_float32_auto(data, &ind);
-    mcconf.l_min_erpm = buffer_get_float32_auto(data, &ind);
+      ind = 0;
+      mcconf.pwm_mode = data[ind++];
+      mcconf.comm_mode = data[ind++];
+      mcconf.motor_type = data[ind++];
+      mcconf.sensor_mode = data[ind++];
+      mcconf.l_current_max = buffer_get_float32_auto(data, &ind);
+      mcconf.l_current_min = buffer_get_float32_auto(data, &ind);
+      mcconf.l_in_current_max = buffer_get_float32_auto(data, &ind);
+      mcconf.l_in_current_min = buffer_get_float32_auto(data, &ind);
+      mcconf.l_abs_current_max = buffer_get_float32_auto(data, &ind);
+      mcconf.l_min_erpm = buffer_get_float32_auto(data, &ind);
 
-    mcconf.l_max_erpm = buffer_get_float32_auto(data, &ind);
-    mcconf.l_erpm_start = buffer_get_float32_auto(data, &ind);
-    mcconf.l_max_erpm_fbrake = buffer_get_float32_auto(data, &ind);
-    mcconf.l_max_erpm_fbrake_cc = buffer_get_float32_auto(data, &ind);
-    mcconf.l_min_vin = buffer_get_float32_auto(data, &ind);
-    mcconf.l_max_vin = buffer_get_float32_auto(data, &ind);
-    mcconf.l_battery_cut_start = buffer_get_float32_auto(data, &ind);
-    mcconf.l_battery_cut_end = buffer_get_float32_auto(data, &ind);
-    mcconf.l_slow_abs_current = data[ind++];
-    mcconf.l_temp_fet_start = buffer_get_float32_auto(data, &ind);
+      mcconf.l_max_erpm = buffer_get_float32_auto(data, &ind);
+      mcconf.l_erpm_start = buffer_get_float32_auto(data, &ind);
+      mcconf.l_max_erpm_fbrake = buffer_get_float32_auto(data, &ind);
+      mcconf.l_max_erpm_fbrake_cc = buffer_get_float32_auto(data, &ind);
+      mcconf.l_min_vin = buffer_get_float32_auto(data, &ind);
+      mcconf.l_max_vin = buffer_get_float32_auto(data, &ind);
+      mcconf.l_battery_cut_start = buffer_get_float32_auto(data, &ind);
+      mcconf.l_battery_cut_end = buffer_get_float32_auto(data, &ind);
+      mcconf.l_slow_abs_current = data[ind++];
+      mcconf.l_temp_fet_start = buffer_get_float32_auto(data, &ind);
 
-    mcconf.l_temp_fet_end = buffer_get_float32_auto(data, &ind);
-    mcconf.l_temp_motor_start = buffer_get_float32_auto(data, &ind);
-    mcconf.l_temp_motor_end = buffer_get_float32_auto(data, &ind);
-    mcconf.l_temp_accel_dec = buffer_get_float32_auto(data, &ind);
-    mcconf.l_min_duty = buffer_get_float32_auto(data, &ind);
-    mcconf.l_max_duty = buffer_get_float32_auto(data, &ind);
-    mcconf.l_watt_max = buffer_get_float32_auto(data, &ind);
-    mcconf.l_watt_min = buffer_get_float32_auto(data, &ind);
+      mcconf.l_temp_fet_end = buffer_get_float32_auto(data, &ind);
+      mcconf.l_temp_motor_start = buffer_get_float32_auto(data, &ind);
+      mcconf.l_temp_motor_end = buffer_get_float32_auto(data, &ind);
+      mcconf.l_temp_accel_dec = buffer_get_float32_auto(data, &ind);
+      mcconf.l_min_duty = buffer_get_float32_auto(data, &ind);
+      mcconf.l_max_duty = buffer_get_float32_auto(data, &ind);
+      mcconf.l_watt_max = buffer_get_float32_auto(data, &ind);
+      mcconf.l_watt_min = buffer_get_float32_auto(data, &ind);
 
-    mcconf.sl_min_erpm = buffer_get_float32_auto(data, &ind);
-    mcconf.sl_min_erpm_cycle_int_limit = buffer_get_float32_auto(data, &ind);
+      mcconf.sl_min_erpm = buffer_get_float32_auto(data, &ind);
+      mcconf.sl_min_erpm_cycle_int_limit = buffer_get_float32_auto(data, &ind);
 
-    mcconf.sl_max_fullbreak_current_dir_change = buffer_get_float32_auto(data, &ind);
-    mcconf.sl_cycle_int_limit = buffer_get_float32_auto(data, &ind);
-    mcconf.sl_phase_advance_at_br = buffer_get_float32_auto(data, &ind);
-    mcconf.sl_cycle_int_rpm_br = buffer_get_float32_auto(data, &ind);
-    mcconf.sl_bemf_coupling_k = buffer_get_float32_auto(data, &ind);
-    memcpy(mcconf.hall_table, data + ind, 8);
-    ind += 8;
-    mcconf.hall_sl_erpm = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_current_kp = buffer_get_float32_auto(data, &ind);
-    mcconf2.foc_current_kp = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_current_ki = buffer_get_float32_auto(data, &ind);
+      mcconf.sl_max_fullbreak_current_dir_change = buffer_get_float32_auto(data, &ind);
+      mcconf.sl_cycle_int_limit = buffer_get_float32_auto(data, &ind);
+      mcconf.sl_phase_advance_at_br = buffer_get_float32_auto(data, &ind);
+      mcconf.sl_cycle_int_rpm_br = buffer_get_float32_auto(data, &ind);
+      mcconf.sl_bemf_coupling_k = buffer_get_float32_auto(data, &ind);
+      memcpy(mcconf.hall_table, data + ind, 8);
+      ind += 8;//133
+      mcconf.hall_sl_erpm = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_current_kp = buffer_get_float32_auto(data, &ind);
+      mcconf2.foc_current_kp = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_current_ki = buffer_get_float32_auto(data, &ind);
 
-    mcconf2.foc_current_ki = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_f_sw = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_dt_us = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_encoder_inverted = data[ind++];
+      mcconf2.foc_current_ki = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_f_sw = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_dt_us = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_encoder_inverted = data[ind++];
 
-    mcconf.foc_encoder_offset = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_encoder_ratio = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_sensor_mode = data[ind++];
-    mcconf2.foc_sensor_mode = data[ind++];
-    mcconf.foc_pll_kp = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_pll_ki = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_encoder_offset = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_encoder_ratio = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_sensor_mode = data[ind++];
+      mcconf2.foc_sensor_mode = data[ind++];
+      mcconf.foc_pll_kp = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_pll_ki = buffer_get_float32_auto(data, &ind);
 
-    mcconf.foc_motor_l = buffer_get_float32_auto(data, &ind);
-    mcconf2.foc_motor_l = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_motor_r = buffer_get_float32_auto(data, &ind);
-    mcconf2.foc_motor_r = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_motor_flux_linkage = buffer_get_float32_auto(data, &ind);
-    mcconf2.foc_motor_flux_linkage = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_observer_gain = buffer_get_float32_auto(data, &ind);
-    mcconf2.foc_observer_gain = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_observer_gain_slow = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_duty_dowmramp_kp = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_motor_l = buffer_get_float32_auto(data, &ind);
+      mcconf2.foc_motor_l = buffer_get_float32_auto(data, &ind);//188
+      mcconf.foc_motor_r = buffer_get_float32_auto(data, &ind);
+      mcconf2.foc_motor_r = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_motor_flux_linkage = buffer_get_float32_auto(data, &ind);
+      mcconf2.foc_motor_flux_linkage = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_observer_gain = buffer_get_float32_auto(data, &ind);
+      mcconf2.foc_observer_gain = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_observer_gain_slow = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_duty_dowmramp_kp = buffer_get_float32_auto(data, &ind);
 
-    mcconf.foc_duty_dowmramp_ki = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_openloop_rpm = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_sl_openloop_hyst = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_sl_openloop_time = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_sl_d_current_duty = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_sl_d_current_factor = buffer_get_float32_auto(data, &ind);
-    memcpy(mcconf.foc_hall_table, data + ind, 8);
-    ind += 8;
-    memcpy(mcconf2.foc_hall_table, data + ind, 8);
-    ind += 8;
-    mcconf.foc_sl_erpm = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_sample_v0_v7 = data[ind++];
+      mcconf.foc_duty_dowmramp_ki = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_openloop_rpm = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_sl_openloop_hyst = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_sl_openloop_time = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_sl_d_current_duty = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_sl_d_current_factor = buffer_get_float32_auto(data, &ind);
+      memcpy(mcconf.foc_hall_table, data + ind, 8);
+      ind += 8;
+      memcpy(mcconf2.foc_hall_table, data + ind, 8);
+      ind += 8;
+      mcconf.foc_sl_erpm = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_sample_v0_v7 = data[ind++];
 
-    mcconf.foc_sample_high_current = data[ind++];
-    mcconf.foc_sat_comp = buffer_get_float32_auto(data, &ind);
-    mcconf.foc_temp_comp = data[ind++];
-    mcconf.foc_temp_comp_base_temp = buffer_get_float32_auto(data, &ind);
-    mcconf.s_pid_kp = buffer_get_float32_auto(data, &ind);
-    mcconf.s_pid_ki = buffer_get_float32_auto(data, &ind);
-    mcconf.s_pid_kd = buffer_get_float32_auto(data, &ind);
-    mcconf.s_pid_min_erpm = buffer_get_float32_auto(data, &ind);
-    mcconf.s_pid_allow_braking = data[ind++];
-    mcconf.p_pid_kp = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_sample_high_current = data[ind++];
+      mcconf.foc_sat_comp = buffer_get_float32_auto(data, &ind);
+      mcconf.foc_temp_comp = data[ind++];
+      mcconf.foc_temp_comp_base_temp = buffer_get_float32_auto(data, &ind);
+      mcconf.s_pid_kp = buffer_get_float32_auto(data, &ind);
+      mcconf.s_pid_ki = buffer_get_float32_auto(data, &ind);
+      mcconf.s_pid_kd = buffer_get_float32_auto(data, &ind);
+      mcconf.s_pid_min_erpm = buffer_get_float32_auto(data, &ind);
+      mcconf.s_pid_allow_braking = data[ind++];
+      mcconf.p_pid_kp = buffer_get_float32_auto(data, &ind);
 
-    mcconf.p_pid_ki = buffer_get_float32_auto(data, &ind);
-    mcconf.p_pid_kd = buffer_get_float32_auto(data, &ind);
-    mcconf.p_pid_ang_div = buffer_get_float32_auto(data, &ind);
-    mcconf.cc_startup_boost_duty = buffer_get_float32_auto(data, &ind);
-    mcconf.cc_min_current = buffer_get_float32_auto(data, &ind);
-    mcconf.cc_gain = buffer_get_float32_auto(data, &ind);
-    mcconf.cc_ramp_step_max = buffer_get_float32_auto(data, &ind);
-    mcconf.m_fault_stop_time_ms = buffer_get_int32(data, &ind);
-    mcconf.m_duty_ramp_step = buffer_get_float32_auto(data, &ind);
-    ;
-    mcconf.m_current_backoff_gain = buffer_get_float32_auto(data, &ind);
+      mcconf.p_pid_ki = buffer_get_float32_auto(data, &ind);
+      mcconf.p_pid_kd = buffer_get_float32_auto(data, &ind);
+      mcconf.p_pid_ang_div = buffer_get_float32_auto(data, &ind);
+      mcconf.cc_startup_boost_duty = buffer_get_float32_auto(data, &ind);
+      mcconf.cc_min_current = buffer_get_float32_auto(data, &ind);
+      mcconf.cc_gain = buffer_get_float32_auto(data, &ind);
+      mcconf.cc_ramp_step_max = buffer_get_float32_auto(data, &ind);
+      mcconf.m_fault_stop_time_ms = buffer_get_int32(data, &ind);
+      mcconf.m_duty_ramp_step = buffer_get_float32_auto(data, &ind);
+      ;
+      mcconf.m_current_backoff_gain = buffer_get_float32_auto(data, &ind);
 
-    mcconf.m_encoder_counts = buffer_get_uint32(data, &ind);
-    mcconf2.m_encoder_counts = buffer_get_uint32(data, &ind);
-    mcconf.m_sensor_port_mode = data[ind++];
-    mcconf2.m_sensor_port_mode = data[ind++];
-    mcconf.m_invert_direction = data[ind++];
-    mcconf2.m_invert_direction = data[ind++];
-    mcconf.m_drv8301_oc_mode = data[ind++];
-    mcconf.m_drv8301_oc_adj = data[ind++];
-    mcconf.m_bldc_f_sw_min = buffer_get_float32_auto(data, &ind);
-    mcconf.m_bldc_f_sw_max = buffer_get_float32_auto(data, &ind);
+      mcconf.m_encoder_counts = buffer_get_uint32(data, &ind);
+      mcconf2.m_encoder_counts = buffer_get_uint32(data, &ind);
+      mcconf.m_sensor_port_mode = data[ind++];
+      mcconf2.m_sensor_port_mode = data[ind++];
+      mcconf.m_invert_direction = data[ind++];
+      mcconf2.m_invert_direction = data[ind++];
+      mcconf.m_drv8301_oc_mode = data[ind++];
+      mcconf.m_drv8301_oc_adj = data[ind++];
+      mcconf.m_bldc_f_sw_min = buffer_get_float32_auto(data, &ind);
+      mcconf.m_bldc_f_sw_max = buffer_get_float32_auto(data, &ind);
 
-    mcconf.m_dc_f_sw = buffer_get_float32_auto(data, &ind);
-    mcconf.m_ntc_motor_beta = buffer_get_float32_auto(data, &ind);
-    mcconf.m_motor_temp_throttle_enable = data[ind++];;
-    mcconf.m_wheel_diameter = buffer_get_float32_auto(data, &ind);
-    mcconf.m_gear_ratio= buffer_get_float32_auto(data, &ind);
-    mcconf.m_motor_poles = buffer_get_float32_auto(data, &ind);
+      mcconf.m_dc_f_sw = buffer_get_float32_auto(data, &ind);
+      mcconf.m_ntc_motor_beta = buffer_get_float32_auto(data, &ind);
+      mcconf.m_motor_temp_throttle_enable = data[ind++];;
+      mcconf.m_wheel_diameter = buffer_get_float32_auto(data, &ind);
+      mcconf.m_gear_ratio= buffer_get_float32_auto(data, &ind);
+      mcconf.m_motor_poles = buffer_get_float32_auto(data, &ind);
 
-    mcconf.lo_current_max = mcconf.l_current_max;
-    mcconf.lo_current_min = mcconf.l_current_min;
-    mcconf.lo_in_current_max = mcconf.l_in_current_max;
-    mcconf.lo_in_current_min = mcconf.l_in_current_min;
-    mcconf.lo_current_motor_max_now = mcconf.l_current_max;
-    mcconf.lo_current_motor_min_now = mcconf.l_current_min;
+      mcconf.lo_current_max = mcconf.l_current_max;
+      mcconf.lo_current_min = mcconf.l_current_min;
+      mcconf.lo_in_current_max = mcconf.l_in_current_max;
+      mcconf.lo_in_current_min = mcconf.l_in_current_min;
+      mcconf.lo_current_motor_max_now = mcconf.l_current_max;
+      mcconf.lo_current_motor_min_now = mcconf.l_current_min;
 
-    mcconf2.pwm_mode = mcconf.pwm_mode;
-    mcconf2.comm_mode = mcconf.comm_mode;
-    mcconf2.motor_type = mcconf.motor_type;
-    mcconf2.sensor_mode = mcconf.sensor_mode;
-    mcconf2.l_current_max = mcconf.l_current_max;
-    mcconf2.l_current_min = mcconf.l_current_min;
-    mcconf2.l_in_current_max = mcconf.l_in_current_max;
-    mcconf2.l_in_current_min = mcconf.l_in_current_min;
-    mcconf2.l_abs_current_max = mcconf.l_abs_current_max;
-    mcconf2.l_min_erpm = mcconf.l_min_erpm;
-    mcconf2.l_max_erpm = mcconf.l_max_erpm;
-    mcconf2.l_erpm_start = mcconf.l_erpm_start;
-    mcconf2.l_max_erpm_fbrake = mcconf.l_max_erpm_fbrake;
-    mcconf2.l_max_erpm_fbrake_cc = mcconf.l_max_erpm_fbrake_cc;
-    mcconf2.l_min_vin = mcconf.l_min_vin;
-    mcconf2.l_max_vin = mcconf.l_max_vin;
-    mcconf2.l_battery_cut_start = mcconf.l_battery_cut_start;
-    mcconf2.l_battery_cut_end = mcconf.l_battery_cut_end;
-    mcconf2.l_slow_abs_current = mcconf.l_slow_abs_current;
-    mcconf2.l_temp_fet_start = mcconf.l_temp_fet_start;
-    mcconf2.l_temp_fet_end = mcconf.l_temp_fet_end;
-    mcconf2.l_temp_motor_start = mcconf.l_temp_motor_start;
-    mcconf2.l_temp_motor_end = mcconf.l_temp_motor_end;
-    mcconf2.l_temp_accel_dec = mcconf.l_temp_accel_dec;
-    mcconf2.l_min_duty = mcconf.l_min_duty;
-    mcconf2.l_max_duty = mcconf.l_max_duty;
-    mcconf2.l_watt_max = mcconf.l_watt_max;
-    mcconf2.l_watt_min = mcconf.l_watt_min;
-    ;
-    mcconf2.sl_min_erpm = mcconf.sl_min_erpm;
-    mcconf2.sl_min_erpm_cycle_int_limit = mcconf.sl_min_erpm_cycle_int_limit;
-    mcconf2.sl_max_fullbreak_current_dir_change = mcconf.sl_max_fullbreak_current_dir_change;
-    mcconf2.sl_cycle_int_limit = mcconf.sl_cycle_int_limit;
-    mcconf2.sl_phase_advance_at_br = mcconf.sl_phase_advance_at_br;
-    mcconf2.sl_cycle_int_rpm_br = mcconf.sl_cycle_int_rpm_br;
-    mcconf2.sl_bemf_coupling_k = mcconf.sl_bemf_coupling_k;
-    memcpy(mcconf2.hall_table,data + ind, 8);
-    mcconf2.hall_sl_erpm = mcconf.hall_sl_erpm;
-    mcconf2.foc_f_sw = mcconf.foc_f_sw;
-    mcconf2.foc_dt_us = mcconf.foc_dt_us;
-    mcconf2.foc_encoder_inverted = mcconf.foc_encoder_inverted;
-    mcconf2.foc_encoder_offset = mcconf.foc_encoder_offset;
-    mcconf2.foc_encoder_ratio = mcconf.foc_encoder_ratio;
-    mcconf2.foc_pll_kp = mcconf.foc_pll_kp;
-    mcconf2.foc_pll_ki = mcconf.foc_pll_ki;
-    mcconf2.foc_observer_gain_slow = mcconf.foc_observer_gain_slow;
-    mcconf2.foc_duty_dowmramp_kp = mcconf.foc_duty_dowmramp_kp;
-    mcconf2.foc_duty_dowmramp_ki = mcconf.foc_duty_dowmramp_ki;
-    mcconf2.foc_openloop_rpm = mcconf.foc_openloop_rpm;
-    mcconf2.foc_sl_openloop_hyst = mcconf.foc_sl_openloop_hyst;
-    mcconf2.foc_sl_openloop_time = mcconf.foc_sl_openloop_time;
-    mcconf2.foc_sl_d_current_duty = mcconf.foc_sl_d_current_duty;
-    mcconf2.foc_sl_d_current_factor = mcconf.foc_sl_d_current_factor;
-    mcconf2.foc_sl_erpm = mcconf.foc_sl_erpm;
-    mcconf2.foc_sample_v0_v7 = mcconf.foc_sample_v0_v7;
-    mcconf2.foc_sample_high_current = mcconf.foc_sample_high_current;
-    mcconf2.foc_sat_comp = mcconf.foc_sat_comp;
-    mcconf2.foc_temp_comp = mcconf.foc_temp_comp;
-    mcconf2.foc_temp_comp_base_temp = mcconf.foc_temp_comp_base_temp;
-    mcconf2.s_pid_kp = mcconf.s_pid_kp;
-    mcconf2.s_pid_ki = mcconf.s_pid_ki;
-    mcconf2.s_pid_kd = mcconf.s_pid_kd;
-    mcconf2.s_pid_min_erpm = mcconf.s_pid_min_erpm;
-    mcconf2.s_pid_allow_braking = mcconf.s_pid_allow_braking;
-    mcconf2.p_pid_kp = mcconf.p_pid_kp;
-    mcconf2.p_pid_ki = mcconf.p_pid_ki;
-    mcconf2.p_pid_kd = mcconf.p_pid_kd;
-    mcconf2.p_pid_ang_div = mcconf.p_pid_ang_div;
-    mcconf2.cc_startup_boost_duty = mcconf.cc_startup_boost_duty;
-    mcconf2.cc_min_current = mcconf.cc_min_current;
-    mcconf2.cc_gain = mcconf.cc_gain;
-    mcconf2.cc_ramp_step_max = mcconf.cc_ramp_step_max;
-    mcconf2.m_fault_stop_time_ms = mcconf.m_fault_stop_time_ms;
-    mcconf2.m_duty_ramp_step = mcconf.m_duty_ramp_step;
-    mcconf2.m_current_backoff_gain = mcconf.m_current_backoff_gain;
-    mcconf2.m_drv8301_oc_mode = mcconf.m_drv8301_oc_mode;
-    mcconf2.m_drv8301_oc_adj = mcconf.m_drv8301_oc_adj;
-    mcconf2.m_bldc_f_sw_min = mcconf.m_bldc_f_sw_min;
-    mcconf2.m_bldc_f_sw_max = mcconf.m_bldc_f_sw_max;
-    mcconf2.m_dc_f_sw = mcconf.m_dc_f_sw;
-    mcconf2.m_ntc_motor_beta = mcconf.m_ntc_motor_beta;
-    mcconf2.m_motor_temp_throttle_enable = mcconf.m_motor_temp_throttle_enable;
-    mcconf2.m_wheel_diameter = mcconf.m_wheel_diameter;
-    mcconf2.m_gear_ratio =  mcconf.m_gear_ratio;
-    mcconf2.m_motor_poles = mcconf.m_motor_poles;
+      mcconf2.pwm_mode = mcconf.pwm_mode;
+      mcconf2.comm_mode = mcconf.comm_mode;
+      mcconf2.motor_type = mcconf.motor_type;
+      mcconf2.sensor_mode = mcconf.sensor_mode;
+      mcconf2.l_current_max = mcconf.l_current_max;
+      mcconf2.l_current_min = mcconf.l_current_min;
+      mcconf2.l_in_current_max = mcconf.l_in_current_max;
+      mcconf2.l_in_current_min = mcconf.l_in_current_min;
+      mcconf2.l_abs_current_max = mcconf.l_abs_current_max;
+      mcconf2.l_min_erpm = mcconf.l_min_erpm;
+      mcconf2.l_max_erpm = mcconf.l_max_erpm;
+      mcconf2.l_erpm_start = mcconf.l_erpm_start;
+      mcconf2.l_max_erpm_fbrake = mcconf.l_max_erpm_fbrake;
+      mcconf2.l_max_erpm_fbrake_cc = mcconf.l_max_erpm_fbrake_cc;
+      mcconf2.l_min_vin = mcconf.l_min_vin;
+      mcconf2.l_max_vin = mcconf.l_max_vin;
+      mcconf2.l_battery_cut_start = mcconf.l_battery_cut_start;
+      mcconf2.l_battery_cut_end = mcconf.l_battery_cut_end;
+      mcconf2.l_slow_abs_current = mcconf.l_slow_abs_current;
+      mcconf2.l_temp_fet_start = mcconf.l_temp_fet_start;
+      mcconf2.l_temp_fet_end = mcconf.l_temp_fet_end;
+      mcconf2.l_temp_motor_start = mcconf.l_temp_motor_start;
+      mcconf2.l_temp_motor_end = mcconf.l_temp_motor_end;
+      mcconf2.l_temp_accel_dec = mcconf.l_temp_accel_dec;
+      mcconf2.l_min_duty = mcconf.l_min_duty;
+      mcconf2.l_max_duty = mcconf.l_max_duty;
+      mcconf2.l_watt_max = mcconf.l_watt_max;
+      mcconf2.l_watt_min = mcconf.l_watt_min;
+      ;
+      mcconf2.sl_min_erpm = mcconf.sl_min_erpm;
+      mcconf2.sl_min_erpm_cycle_int_limit = mcconf.sl_min_erpm_cycle_int_limit;
+      mcconf2.sl_max_fullbreak_current_dir_change = mcconf.sl_max_fullbreak_current_dir_change;
+      mcconf2.sl_cycle_int_limit = mcconf.sl_cycle_int_limit;
+      mcconf2.sl_phase_advance_at_br = mcconf.sl_phase_advance_at_br;
+      mcconf2.sl_cycle_int_rpm_br = mcconf.sl_cycle_int_rpm_br;
+      mcconf2.sl_bemf_coupling_k = mcconf.sl_bemf_coupling_k;
+      memcpy(mcconf2.hall_table,data + ind, 8);
+      mcconf2.hall_sl_erpm = mcconf.hall_sl_erpm;
+      mcconf2.foc_f_sw = mcconf.foc_f_sw;
+      mcconf2.foc_dt_us = mcconf.foc_dt_us;
+      mcconf2.foc_encoder_inverted = mcconf.foc_encoder_inverted;
+      mcconf2.foc_encoder_offset = mcconf.foc_encoder_offset;
+      mcconf2.foc_encoder_ratio = mcconf.foc_encoder_ratio;
+      mcconf2.foc_pll_kp = mcconf.foc_pll_kp;
+      mcconf2.foc_pll_ki = mcconf.foc_pll_ki;
+      mcconf2.foc_observer_gain_slow = mcconf.foc_observer_gain_slow;
+      mcconf2.foc_duty_dowmramp_kp = mcconf.foc_duty_dowmramp_kp;
+      mcconf2.foc_duty_dowmramp_ki = mcconf.foc_duty_dowmramp_ki;
+      mcconf2.foc_openloop_rpm = mcconf.foc_openloop_rpm;
+      mcconf2.foc_sl_openloop_hyst = mcconf.foc_sl_openloop_hyst;
+      mcconf2.foc_sl_openloop_time = mcconf.foc_sl_openloop_time;
+      mcconf2.foc_sl_d_current_duty = mcconf.foc_sl_d_current_duty;
+      mcconf2.foc_sl_d_current_factor = mcconf.foc_sl_d_current_factor;
+      mcconf2.foc_sl_erpm = mcconf.foc_sl_erpm;
+      mcconf2.foc_sample_v0_v7 = mcconf.foc_sample_v0_v7;
+      mcconf2.foc_sample_high_current = mcconf.foc_sample_high_current;
+      mcconf2.foc_sat_comp = mcconf.foc_sat_comp;
+      mcconf2.foc_temp_comp = mcconf.foc_temp_comp;
+      mcconf2.foc_temp_comp_base_temp = mcconf.foc_temp_comp_base_temp;
+      mcconf2.s_pid_kp = mcconf.s_pid_kp;
+      mcconf2.s_pid_ki = mcconf.s_pid_ki;
+      mcconf2.s_pid_kd = mcconf.s_pid_kd;
+      mcconf2.s_pid_min_erpm = mcconf.s_pid_min_erpm;
+      mcconf2.s_pid_allow_braking = mcconf.s_pid_allow_braking;
+      mcconf2.p_pid_kp = mcconf.p_pid_kp;
+      mcconf2.p_pid_ki = mcconf.p_pid_ki;
+      mcconf2.p_pid_kd = mcconf.p_pid_kd;
+      mcconf2.p_pid_ang_div = mcconf.p_pid_ang_div;
+      mcconf2.cc_startup_boost_duty = mcconf.cc_startup_boost_duty;
+      mcconf2.cc_min_current = mcconf.cc_min_current;
+      mcconf2.cc_gain = mcconf.cc_gain;
+      mcconf2.cc_ramp_step_max = mcconf.cc_ramp_step_max;
+      mcconf2.m_fault_stop_time_ms = mcconf.m_fault_stop_time_ms;
+      mcconf2.m_duty_ramp_step = mcconf.m_duty_ramp_step;
+      mcconf2.m_current_backoff_gain = mcconf.m_current_backoff_gain;
+      mcconf2.m_drv8301_oc_mode = mcconf.m_drv8301_oc_mode;
+      mcconf2.m_drv8301_oc_adj = mcconf.m_drv8301_oc_adj;
+      mcconf2.m_bldc_f_sw_min = mcconf.m_bldc_f_sw_min;
+      mcconf2.m_bldc_f_sw_max = mcconf.m_bldc_f_sw_max;
+      mcconf2.m_dc_f_sw = mcconf.m_dc_f_sw;
+      mcconf2.m_ntc_motor_beta = mcconf.m_ntc_motor_beta;
+      mcconf2.m_motor_temp_throttle_enable = mcconf.m_motor_temp_throttle_enable;
+      mcconf2.m_wheel_diameter = mcconf.m_wheel_diameter;
+      mcconf2.m_gear_ratio =  mcconf.m_gear_ratio;
+      mcconf2.m_motor_poles = mcconf.m_motor_poles;
 
-    mcconf2.lo_current_max = mcconf2.l_current_max;
-    mcconf2.lo_current_min = mcconf2.l_current_min;
-    mcconf2.lo_in_current_max = mcconf2.l_in_current_max;
-    mcconf2.lo_in_current_min = mcconf2.l_in_current_min;
-    mcconf2.lo_current_motor_max_now = mcconf2.l_current_max;
-    mcconf2.lo_current_motor_min_now = mcconf2.l_current_min;
+      mcconf2.lo_current_max = mcconf2.l_current_max;
+      mcconf2.lo_current_min = mcconf2.l_current_min;
+      mcconf2.lo_in_current_max = mcconf2.l_in_current_max;
+      mcconf2.lo_in_current_min = mcconf2.l_in_current_min;
+      mcconf2.lo_current_motor_max_now = mcconf2.l_current_max;
+      mcconf2.lo_current_motor_min_now = mcconf2.l_current_min;
 
 
-    // Apply limits if they are defined
+      // Apply limits if they are defined
 #ifndef DISABLE_HW_LIMITS
 #ifdef HW_LIM_CURRENT
-    utils_truncate_number(&mcconf.l_current_max, HW_LIM_CURRENT);
-    utils_truncate_number(&mcconf.l_current_min, HW_LIM_CURRENT);
+      utils_truncate_number(&mcconf.l_current_max, HW_LIM_CURRENT);
+      utils_truncate_number(&mcconf.l_current_min, HW_LIM_CURRENT);
 #endif
 #ifdef HW_LIM_CURRENT_IN
-    utils_truncate_number(&mcconf.l_in_current_max, HW_LIM_CURRENT_IN);
-    utils_truncate_number(&mcconf.l_in_current_min, HW_LIM_CURRENT);
+      utils_truncate_number(&mcconf.l_in_current_max, HW_LIM_CURRENT_IN);
+      utils_truncate_number(&mcconf.l_in_current_min, HW_LIM_CURRENT);
 #endif
 #ifdef HW_LIM_CURRENT_ABS
-    utils_truncate_number(&mcconf.l_abs_current_max, HW_LIM_CURRENT_ABS);
+      utils_truncate_number(&mcconf.l_abs_current_max, HW_LIM_CURRENT_ABS);
 #endif
 #ifdef HW_LIM_VIN
-    utils_truncate_number(&mcconf.l_max_vin, HW_LIM_VIN);
-    utils_truncate_number(&mcconf.l_min_vin, HW_LIM_VIN);
+      utils_truncate_number(&mcconf.l_max_vin, HW_LIM_VIN);
+      utils_truncate_number(&mcconf.l_min_vin, HW_LIM_VIN);
 #endif
 #ifdef HW_LIM_ERPM
-    utils_truncate_number(&mcconf.l_max_erpm, HW_LIM_ERPM);
-    utils_truncate_number(&mcconf.l_min_erpm, HW_LIM_ERPM);
+      utils_truncate_number(&mcconf.l_max_erpm, HW_LIM_ERPM);
+      utils_truncate_number(&mcconf.l_min_erpm, HW_LIM_ERPM);
 #endif
 #ifdef HW_LIM_DUTY_MIN
-    utils_truncate_number(&mcconf.l_min_duty, HW_LIM_DUTY_MIN);
+      utils_truncate_number(&mcconf.l_min_duty, HW_LIM_DUTY_MIN);
 #endif
 #ifdef HW_LIM_DUTY_MAX
-    utils_truncate_number(&mcconf.l_max_duty, HW_LIM_DUTY_MAX);
+      utils_truncate_number(&mcconf.l_max_duty, HW_LIM_DUTY_MAX);
 #endif
 #ifdef HW_LIM_TEMP_FET
-    utils_truncate_number(&mcconf.l_temp_fet_start, HW_LIM_TEMP_FET);
-    utils_truncate_number(&mcconf.l_temp_fet_end, HW_LIM_TEMP_FET);
+      utils_truncate_number(&mcconf.l_temp_fet_start, HW_LIM_TEMP_FET);
+      utils_truncate_number(&mcconf.l_temp_fet_end, HW_LIM_TEMP_FET);
 #endif
 #endif
 
-    // Apply limits if they are defined
+      // Apply limits if they are defined
 #ifndef DISABLE_HW_LIMITS
 #ifdef HW_LIM_CURRENT
-    utils_truncate_number(&mcconf2.l_current_max, HW_LIM_CURRENT);
-    utils_truncate_number(&mcconf2.l_current_min, HW_LIM_CURRENT);
+      utils_truncate_number(&mcconf2.l_current_max, HW_LIM_CURRENT);
+      utils_truncate_number(&mcconf2.l_current_min, HW_LIM_CURRENT);
 #endif
 #ifdef HW_LIM_CURRENT_IN
-    utils_truncate_number(&mcconf2.l_in_current_max, HW_LIM_CURRENT_IN);
-    utils_truncate_number(&mcconf2.l_in_current_min, HW_LIM_CURRENT);
+      utils_truncate_number(&mcconf2.l_in_current_max, HW_LIM_CURRENT_IN);
+      utils_truncate_number(&mcconf2.l_in_current_min, HW_LIM_CURRENT);
 #endif
 #ifdef HW_LIM_CURRENT_ABS
-    utils_truncate_number(&mcconf2.l_abs_current_max, HW_LIM_CURRENT_ABS);
+      utils_truncate_number(&mcconf2.l_abs_current_max, HW_LIM_CURRENT_ABS);
 #endif
 #ifdef HW_LIM_VIN
-    utils_truncate_number(&mcconf.l_max_vin, HW_LIM_VIN);
-    utils_truncate_number(&mcconf.l_min_vin, HW_LIM_VIN);
+      utils_truncate_number(&mcconf.l_max_vin, HW_LIM_VIN);
+      utils_truncate_number(&mcconf.l_min_vin, HW_LIM_VIN);
 #endif
 #ifdef HW_LIM_ERPM
-    utils_truncate_number(&mcconf2.l_max_erpm, HW_LIM_ERPM);
-    utils_truncate_number(&mcconf2.l_min_erpm, HW_LIM_ERPM);
+      utils_truncate_number(&mcconf2.l_max_erpm, HW_LIM_ERPM);
+      utils_truncate_number(&mcconf2.l_min_erpm, HW_LIM_ERPM);
 #endif
 #ifdef HW_LIM_DUTY_MIN
-    utils_truncate_number(&mcconf2.l_min_duty, HW_LIM_DUTY_MIN);
+      utils_truncate_number(&mcconf2.l_min_duty, HW_LIM_DUTY_MIN);
 #endif
 #ifdef HW_LIM_DUTY_MAX
-    utils_truncate_number(&mcconf2.l_max_duty, HW_LIM_DUTY_MAX);
+      utils_truncate_number(&mcconf2.l_max_duty, HW_LIM_DUTY_MAX);
 #endif
 #ifdef HW_LIM_TEMP_FET
-    utils_truncate_number(&mcconf2.l_temp_fet_start, HW_LIM_TEMP_FET);
-    utils_truncate_number(&mcconf2.l_temp_fet_end, HW_LIM_TEMP_FET);
+      utils_truncate_number(&mcconf2.l_temp_fet_start, HW_LIM_TEMP_FET);
+      utils_truncate_number(&mcconf2.l_temp_fet_end, HW_LIM_TEMP_FET);
 #endif
 #endif
 
-    conf_general_store_mc_configuration(&mcconf, &mcconf2);
-    mc_interface_set_configuration(&mcconf, &mcconf2);
-    chThdSleepMilliseconds(200);
+      conf_general_store_mc_configuration(&mcconf, &mcconf2);
+      mc_interface_set_configuration(&mcconf, &mcconf2);
+      chThdSleepMilliseconds(200);
 
-    ind = 0;
-    send_buffer[ind++] = packet_id;
-    commands_send_packet(send_buffer, ind);
+      ind = 0;
+      send_buffer[ind++] = packet_id;
+      commands_send_packet(send_buffer, ind);
+    }
     break;
 
   case COMM_GET_MCCONF:
@@ -717,94 +720,97 @@ void commands_process_packet(unsigned char *data, unsigned int len,
     break;
 
   case COMM_SET_APPCONF:
-    appconf = *app_get_configuration();
+    if(len == 167)
+    {
+      appconf = *app_get_configuration();
 
-    ind = 0;
-    appconf.controller_id = data[ind++];
-    appconf.timeout_msec = buffer_get_uint32(data, &ind);
-    appconf.timeout_brake_current = buffer_get_float32_auto(data, &ind);
-    appconf.send_can_status = data[ind++];
-    appconf.send_can_status_rate_hz = buffer_get_uint16(data, &ind);
-    appconf.can_baud_rate = data[ind++];
+      ind = 0;
+      appconf.controller_id = data[ind++];
+      appconf.timeout_msec = buffer_get_uint32(data, &ind);
+      appconf.timeout_brake_current = buffer_get_float32_auto(data, &ind);
+      appconf.send_can_status = data[ind++];
+      appconf.send_can_status_rate_hz = buffer_get_uint16(data, &ind);
+      appconf.can_baud_rate = data[ind++];
 
-    appconf.app_to_use = data[ind++];
+      appconf.app_to_use = data[ind++];
 
-    appconf.app_ppm_conf.ctrl_type = data[ind++];
-    appconf.app_ppm_conf.pid_max_erpm = buffer_get_float32_auto(data, &ind);
-    appconf.app_ppm_conf.hyst = buffer_get_float32_auto(data, &ind);
-    appconf.app_ppm_conf.pulse_start = buffer_get_float32_auto(data, &ind);
-    appconf.app_ppm_conf.pulse_end = buffer_get_float32_auto(data, &ind);
-    appconf.app_ppm_conf.pulse_center = buffer_get_float32_auto(data, &ind);
-    appconf.app_ppm_conf.median_filter = data[ind++];
-    appconf.app_ppm_conf.safe_start = data[ind++];
-    appconf.app_ppm_conf.throttle_exp = buffer_get_float32_auto(data, &ind);
-    appconf.app_ppm_conf.throttle_exp_brake = buffer_get_float32_auto(data, &ind);
-    appconf.app_ppm_conf.throttle_exp_mode = data[ind++];
-    appconf.app_ppm_conf.ramp_time_pos = buffer_get_float32_auto(data, &ind);
-    appconf.app_ppm_conf.ramp_time_neg = buffer_get_float32_auto(data, &ind);
-    appconf.app_ppm_conf.multi_esc = data[ind++];
-    appconf.app_ppm_conf.tc = data[ind++];
-    appconf.app_ppm_conf.tc_max_diff = buffer_get_float32_auto(data, &ind);
+      appconf.app_ppm_conf.ctrl_type = data[ind++];
+      appconf.app_ppm_conf.pid_max_erpm = buffer_get_float32_auto(data, &ind);
+      appconf.app_ppm_conf.hyst = buffer_get_float32_auto(data, &ind);
+      appconf.app_ppm_conf.pulse_start = buffer_get_float32_auto(data, &ind);
+      appconf.app_ppm_conf.pulse_end = buffer_get_float32_auto(data, &ind);
+      appconf.app_ppm_conf.pulse_center = buffer_get_float32_auto(data, &ind);
+      appconf.app_ppm_conf.median_filter = data[ind++];
+      appconf.app_ppm_conf.safe_start = data[ind++];
+      appconf.app_ppm_conf.throttle_exp = buffer_get_float32_auto(data, &ind);
+      appconf.app_ppm_conf.throttle_exp_brake = buffer_get_float32_auto(data, &ind);
+      appconf.app_ppm_conf.throttle_exp_mode = data[ind++];
+      appconf.app_ppm_conf.ramp_time_pos = buffer_get_float32_auto(data, &ind);
+      appconf.app_ppm_conf.ramp_time_neg = buffer_get_float32_auto(data, &ind);
+      appconf.app_ppm_conf.multi_esc = data[ind++];
+      appconf.app_ppm_conf.tc = data[ind++];
+      appconf.app_ppm_conf.tc_max_diff = buffer_get_float32_auto(data, &ind);
 
-    appconf.app_adc_conf.ctrl_type = data[ind++];
-    appconf.app_adc_conf.hyst = buffer_get_float32_auto(data, &ind);
-    appconf.app_adc_conf.voltage_start = buffer_get_float32_auto(data, &ind);
-    appconf.app_adc_conf.voltage_end = buffer_get_float32_auto(data, &ind);
-    appconf.app_adc_conf.voltage_center = buffer_get_float32_auto(data, &ind);
-    appconf.app_adc_conf.voltage2_start = buffer_get_float32_auto(data, &ind);
-    appconf.app_adc_conf.voltage2_end = buffer_get_float32_auto(data, &ind);
-    appconf.app_adc_conf.use_filter = data[ind++];
-    appconf.app_adc_conf.safe_start = data[ind++];
-    appconf.app_adc_conf.cc_button_inverted = data[ind++];
-    appconf.app_adc_conf.rev_button_inverted = data[ind++];
-    appconf.app_adc_conf.voltage_inverted = data[ind++];
-    appconf.app_adc_conf.voltage2_inverted = data[ind++];
-    appconf.app_adc_conf.throttle_exp = buffer_get_float32_auto(data, &ind);
-    appconf.app_adc_conf.throttle_exp_brake = buffer_get_float32_auto(data, &ind);
-    appconf.app_adc_conf.throttle_exp_mode = data[ind++];
-    appconf.app_adc_conf.ramp_time_pos = buffer_get_float32_auto(data, &ind);
-    appconf.app_adc_conf.ramp_time_neg = buffer_get_float32_auto(data, &ind);
-    appconf.app_adc_conf.multi_esc = data[ind++];
-    appconf.app_adc_conf.tc = data[ind++];
-    appconf.app_adc_conf.tc_max_diff = buffer_get_float32_auto(data, &ind);
-    appconf.app_adc_conf.update_rate_hz = buffer_get_uint16(data, &ind);
+      appconf.app_adc_conf.ctrl_type = data[ind++];
+      appconf.app_adc_conf.hyst = buffer_get_float32_auto(data, &ind);
+      appconf.app_adc_conf.voltage_start = buffer_get_float32_auto(data, &ind);
+      appconf.app_adc_conf.voltage_end = buffer_get_float32_auto(data, &ind);
+      appconf.app_adc_conf.voltage_center = buffer_get_float32_auto(data, &ind);
+      appconf.app_adc_conf.voltage2_start = buffer_get_float32_auto(data, &ind);
+      appconf.app_adc_conf.voltage2_end = buffer_get_float32_auto(data, &ind);
+      appconf.app_adc_conf.use_filter = data[ind++];
+      appconf.app_adc_conf.safe_start = data[ind++];
+      appconf.app_adc_conf.cc_button_inverted = data[ind++];
+      appconf.app_adc_conf.rev_button_inverted = data[ind++];
+      appconf.app_adc_conf.voltage_inverted = data[ind++];
+      appconf.app_adc_conf.voltage2_inverted = data[ind++];
+      appconf.app_adc_conf.throttle_exp = buffer_get_float32_auto(data, &ind);
+      appconf.app_adc_conf.throttle_exp_brake = buffer_get_float32_auto(data, &ind);
+      appconf.app_adc_conf.throttle_exp_mode = data[ind++];
+      appconf.app_adc_conf.ramp_time_pos = buffer_get_float32_auto(data, &ind);
+      appconf.app_adc_conf.ramp_time_neg = buffer_get_float32_auto(data, &ind);
+      appconf.app_adc_conf.multi_esc = data[ind++];
+      appconf.app_adc_conf.tc = data[ind++];
+      appconf.app_adc_conf.tc_max_diff = buffer_get_float32_auto(data, &ind);
+      appconf.app_adc_conf.update_rate_hz = buffer_get_uint16(data, &ind);
 
-    appconf.app_uart_baudrate = buffer_get_uint32(data, &ind);
+      appconf.app_uart_baudrate = buffer_get_uint32(data, &ind);
 
-    appconf.app_chuk_conf.ctrl_type = data[ind++];
-    appconf.app_chuk_conf.hyst = buffer_get_float32_auto(data, &ind);
-    appconf.app_chuk_conf.ramp_time_pos = buffer_get_float32_auto(data, &ind);
-    appconf.app_chuk_conf.ramp_time_neg = buffer_get_float32_auto(data, &ind);
-    appconf.app_chuk_conf.stick_erpm_per_s_in_cc = buffer_get_float32_auto(data, &ind);
-    appconf.app_chuk_conf.throttle_exp = buffer_get_float32_auto(data, &ind);
-    appconf.app_chuk_conf.throttle_exp_brake = buffer_get_float32_auto(data, &ind);
-    appconf.app_chuk_conf.throttle_exp_mode = data[ind++];
-    appconf.app_chuk_conf.multi_esc = data[ind++];
-    appconf.app_chuk_conf.tc = data[ind++];
-    appconf.app_chuk_conf.tc_max_diff = buffer_get_float32_auto(data, &ind);
+      appconf.app_chuk_conf.ctrl_type = data[ind++];
+      appconf.app_chuk_conf.hyst = buffer_get_float32_auto(data, &ind);
+      appconf.app_chuk_conf.ramp_time_pos = buffer_get_float32_auto(data, &ind);
+      appconf.app_chuk_conf.ramp_time_neg = buffer_get_float32_auto(data, &ind);
+      appconf.app_chuk_conf.stick_erpm_per_s_in_cc = buffer_get_float32_auto(data, &ind);
+      appconf.app_chuk_conf.throttle_exp = buffer_get_float32_auto(data, &ind);
+      appconf.app_chuk_conf.throttle_exp_brake = buffer_get_float32_auto(data, &ind);
+      appconf.app_chuk_conf.throttle_exp_mode = data[ind++];
+      appconf.app_chuk_conf.multi_esc = data[ind++];
+      appconf.app_chuk_conf.tc = data[ind++];
+      appconf.app_chuk_conf.tc_max_diff = buffer_get_float32_auto(data, &ind);
 
-    appconf.app_nrf_conf.speed = data[ind++];
-    appconf.app_nrf_conf.power = data[ind++];
-    appconf.app_nrf_conf.crc_type = data[ind++];
-    appconf.app_nrf_conf.retry_delay = data[ind++];
-    appconf.app_nrf_conf.retries = data[ind++];
-    appconf.app_nrf_conf.channel = data[ind++];
-    memcpy(appconf.app_nrf_conf.address, data + ind, 3);
-    ind += 3;
-    appconf.app_nrf_conf.send_crc_ack = data[ind++];
+      appconf.app_nrf_conf.speed = data[ind++];
+      appconf.app_nrf_conf.power = data[ind++];
+      appconf.app_nrf_conf.crc_type = data[ind++];
+      appconf.app_nrf_conf.retry_delay = data[ind++];
+      appconf.app_nrf_conf.retries = data[ind++];
+      appconf.app_nrf_conf.channel = data[ind++];
+      memcpy(appconf.app_nrf_conf.address, data + ind, 3);
+      ind += 3;
+      appconf.app_nrf_conf.send_crc_ack = data[ind++];
 
-    appconf.app_smart_switch_conf.msec_pressed_for_off = buffer_get_uint16(data, &ind);
-    appconf.app_smart_switch_conf.push_to_start_enabled = data[ind++];
-    appconf.app_smart_switch_conf.sec_inactive_for_off = buffer_get_uint16(data, &ind);
+      appconf.app_smart_switch_conf.msec_pressed_for_off = buffer_get_uint16(data, &ind);
+      appconf.app_smart_switch_conf.push_to_start_enabled = data[ind++];
+      appconf.app_smart_switch_conf.sec_inactive_for_off = buffer_get_uint16(data, &ind);
 
-    conf_general_store_app_configuration(&appconf);
-    app_set_configuration(&appconf);
-    timeout_configure(appconf.timeout_msec, appconf.timeout_brake_current);
-    chThdSleepMilliseconds(200);
+      conf_general_store_app_configuration(&appconf);
+      app_set_configuration(&appconf);
+      timeout_configure(appconf.timeout_msec, appconf.timeout_brake_current);
+      chThdSleepMilliseconds(200);
 
-    ind = 0;
-    send_buffer[ind++] = packet_id;
-    commands_send_packet(send_buffer, ind);
+      ind = 0;
+      send_buffer[ind++] = packet_id;
+      commands_send_packet(send_buffer, ind);
+    }
     break;
 
   case COMM_GET_APPCONF:

@@ -2605,8 +2605,7 @@ static void control_current(volatile motor_state_t *state_m, float dt) {
   // TODO: Have a look at this?
   state_m->i_bus = state_m->mod_d * state_m->id + state_m->mod_q * state_m->iq;
   state_m->i_abs = sqrtf(SQ(state_m->id) + SQ(state_m->iq));
-  state_m->i_abs_filter = sqrtf(
-      SQ(state_m->id_filter) + SQ(state_m->iq_filter));
+  state_m->i_abs_filter = sqrtf(SQ(state_m->id_filter) + SQ(state_m->iq_filter));
 
   float mod_alpha = c * state_m->mod_d - s * state_m->mod_q;
   float mod_beta = c * state_m->mod_q + s * state_m->mod_d;

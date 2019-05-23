@@ -1337,6 +1337,17 @@ void mc_interface_fault_stop(mc_fault_code fault) {
     fdata.rpm2 = mc_interface_get_rpm2();
     fdata.tacho2 = mc_interface_get_tachometer_value2(false);
     fdata.temperature2 = motor_temps.mosfet_temp_2;
+    if (m_conf.motor_type == MOTOR_TYPE_FOC) {
+      // TODO: Make this more general
+      fdata.abs_current_filt = mcpwm_foc_get_abs_motor_current_filtered();
+      fdata.abs_current_filt2 = mcpwm_foc_get_abs_motor_current_filtered2();
+      fdata.iq = mcpwm_foc_get_iq();
+      fdata.iq2 = mcpwm_foc_get_iq2();
+      fdata.id = mcpwm_foc_get_id();
+      fdata.id2 = mcpwm_foc_get_id2();
+    }
+
+
 #ifdef HW_HAS_DRV8301
     if (fault == FAULT_CODE_DRV || fault == FAULT_CODE_DRV2) {
       fdata.drv8301_faults = drv8301_read_faults();
@@ -1417,22 +1428,45 @@ void mc_interface_mc_timer_isr(void) {
   m_motor_id_iterations2++;
   m_motor_iq_iterations2++;
   float abs_current = mc_interface_get_tot_current();
+  float abs_current2 = mc_interface_get_tot_current2();
   float abs_current_filtered = current;
+  float abs_current_filtered2 = current2;
   if (m_conf.motor_type == MOTOR_TYPE_FOC) {
     // TODO: Make this more general
     abs_current = mcpwm_foc_get_abs_motor_current();
     abs_current_filtered = mcpwm_foc_get_abs_motor_current_filtered();
+    abs_current2 = mcpwm_foc_get_abs_motor_current2();
+    abs_current_filtered2 = mcpwm_foc_get_abs_motor_current_filtered2();
   }
 
   // Current fault code
+  static int abs_over_current_ctr_1 = 0;
+  static int abs_over_current_ctr_2 = 0;
   if (m_conf.l_slow_abs_current) {
     if (fabsf(abs_current_filtered) > m_conf.l_abs_current_max) {
+      abs_over_current_ctr_1 ++;
+    }else{
+      abs_over_current_ctr_1 = 0;
+    }
+    if(abs_over_current_ctr_1 > 250){
       mc_interface_fault_stop(FAULT_CODE_ABS_OVER_CURRENT);
+    }
+
+    if (fabsf(abs_current_filtered2) > m_conf2.l_abs_current_max) {
+      abs_over_current_ctr_2 ++;
+    }else{
+      abs_over_current_ctr_2 = 0;
+    }
+    if(abs_over_current_ctr_2 > 250){
+      mc_interface_fault_stop(FAULT_CODE_ABS_OVER_CURRENT2);
     }
   }
   else {
     if (fabsf(abs_current) > m_conf.l_abs_current_max) {
       mc_interface_fault_stop(FAULT_CODE_ABS_OVER_CURRENT);
+    }
+    if (fabsf(abs_current2) > m_conf2.l_abs_current_max) {
+      mc_interface_fault_stop(FAULT_CODE_ABS_OVER_CURRENT2);
     }
   }
 
