@@ -45,14 +45,14 @@ static void icuwidthcb(ICUDriver *icup) {
 	const float len_set = (pulse_end - pulse_start);
 
 	if (len > len_set) {
-		if (len < (len_set * 1.2)) {
+		if (len < (len_set * 2.5)) {
 			len = len_set;
 		} else {
 			// Too long pulse. Most likely something is wrong.
 			len = -1.0;
 		}
 	} else if (len < 0.0) {
-		if ((len + pulse_start) > (pulse_start * 0.8)) {
+		if ((len + pulse_start) > (pulse_start * 0.3)) {
 			len = 0.0;
 		} else {
 			// Too short pulse. Most likely something is wrong.
