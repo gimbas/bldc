@@ -195,8 +195,6 @@ void mcpwm_foc_init(volatile mc_configuration *configuration) {
   TIM_OCInitTypeDef TIM_OCInitStructure;
   TIM_BDTRInitTypeDef TIM_BDTRInitStructure;
 
-  m_conf = configuration;
-
   // Initialize variables
   m_conf = configuration;
   m_state = MC_STATE_OFF;

@@ -48,6 +48,7 @@ static volatile bool stop_now = true;
 static volatile ppm_config config;
 static volatile int pulses_without_power = 0;
 static float input_val = 0.0;
+static volatile float direction_hyst = 0;
 
 // Private functions
 static void update(void *p);
@@ -179,7 +180,10 @@ static THD_FUNCTION(ppm_thread, arg) {
     // Apply ramping
     static systime_t last_time = 0;
     static float servo_val_ramp = 0.0;
-    const float ramp_time = fabsf(servo_val) > fabsf(servo_val_ramp) ? config.ramp_time_pos : config.ramp_time_neg;
+    float ramp_time = fabsf(servo_val) > fabsf(servo_val_ramp) ? config.ramp_time_pos : config.ramp_time_neg;
+    if (fabsf(servo_val) > 0.001) {
+      ramp_time = fminf(config.ramp_time_pos, config.ramp_time_neg);
+    }
 
     if (ramp_time > 0.01) {
       const float ramp_step = (float)ST2MS(chVTTimeElapsedSinceX(last_time)) / (ramp_time * 1000.0);
@@ -193,7 +197,83 @@ static THD_FUNCTION(ppm_thread, arg) {
     bool current_mode_brake = false;
     bool send_current = false;
 
+    static bool force_brake = true;
+    static int8_t did_idle_once = 0;
+
+    // Find lowest RPM
+    float rpm_local = mc_interface_get_rpm();
+    float rpm_local2 = mc_interface_get_rpm2();
+    float rpm_lowest = rpm_local;
+
     switch (config.ctrl_type) {
+    case PPM_CTRL_TYPE_CURRENT_BRAKE_REV_HYST:
+      current_mode = true;
+
+      // Hysteresis 20 % of actual RPM
+      if (force_brake) {
+        if (rpm_lowest < 2000 /*config.max_erpm_for_dir*/ - direction_hyst) { // for 2500 it's 2000
+          force_brake = false;
+          did_idle_once = 0;
+        }
+      } else {
+        if (rpm_lowest > 2000 /*config.max_erpm_for_dir*/ + direction_hyst) { // for 2500 it's 3000
+          force_brake = true;
+          did_idle_once = 0;
+        }
+      }
+
+      if (servo_val >= 0.0) {
+        if (servo_val == 0.0) {
+          // if there was a idle in between then allow going backwards
+          if (did_idle_once == 1 && !force_brake) {
+            did_idle_once = 2;
+          }
+        } else{
+          // accelerated forward or fast enough at least
+          if (rpm_lowest > -2000 /*config.max_erpm_for_dir*/){ // for 2500 it's -2500
+            did_idle_once = 0;
+          }
+        }
+
+        current = servo_val * mcconf->lo_current_motor_max_now;
+      } else {
+        // too fast
+        if (force_brake){
+          current_mode_brake = true;
+        } else{
+          // not too fast backwards
+          if (rpm_local > -2000 /*config.max_erpm_for_dir*/) { // for 2500 it's -2500
+            // first time that we brake and we are not too fast
+            if (did_idle_once != 2) {
+              did_idle_once = 1;
+              current_mode_brake = true;
+            }
+            // too fast backwards
+          } else {
+            // if brake was active already
+            if (did_idle_once == 1) {
+              current_mode_brake = true;
+            } else {
+              // it's ok to go backwards now braking would be strange now
+              did_idle_once = 2;
+            }
+          }
+        }
+
+        if (current_mode_brake) {
+          // braking
+          current = fabsf(servo_val * mcconf->lo_current_motor_min_now);
+        } else {
+          // reverse acceleration
+          current = servo_val * fabsf(mcconf->lo_current_motor_min_now);
+        }
+      }
+
+      if (fabsf(servo_val) < 0.001) {
+        pulses_without_power++;
+      }
+
+      break;
     case PPM_CTRL_TYPE_CURRENT:
     case PPM_CTRL_TYPE_CURRENT_NOREV:
       current_mode = true;
@@ -259,10 +339,7 @@ static THD_FUNCTION(ppm_thread, arg) {
       continue;
     }
 
-    // Find lowest RPM
-    float rpm_local = mc_interface_get_rpm();
-    float rpm_local2 = mc_interface_get_rpm2();
-    float rpm_lowest = rpm_local;
+
     if(fabsf(rpm_local2)<fabsf(rpm_lowest)){
       rpm_lowest = rpm_local2;
     }

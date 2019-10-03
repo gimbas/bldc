@@ -39,10 +39,10 @@
 #define MCCONF_L_CURRENT_MIN			-60.0	// Current limit in Amperes (Lower)
 #endif
 #ifndef MCCONF_L_IN_CURRENT_MAX
-#define MCCONF_L_IN_CURRENT_MAX			60.0	// Input current limit in Amperes (Upper)
+#define MCCONF_L_IN_CURRENT_MAX			30.0	// Input current limit in Amperes (Upper)
 #endif
 #ifndef MCCONF_L_IN_CURRENT_MIN
-#define MCCONF_L_IN_CURRENT_MIN			-30.0	// Input current limit in Amperes (Lower)
+#define MCCONF_L_IN_CURRENT_MIN			-15.0	// Input current limit in Amperes (Lower)
 #endif
 #ifndef MCCONF_L_MAX_ABS_CURRENT
 #define MCCONF_L_MAX_ABS_CURRENT		180.0	// The maximum absolute current above which a fault is generated

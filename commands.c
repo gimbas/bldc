@@ -289,8 +289,8 @@ void commands_process_packet(unsigned char *data, unsigned int len,
       mcconf.sensor_mode = data[ind++];
       mcconf.l_current_max = buffer_get_float32_auto(data, &ind);
       mcconf.l_current_min = buffer_get_float32_auto(data, &ind);
-      mcconf.l_in_current_max = buffer_get_float32_auto(data, &ind);
-      mcconf.l_in_current_min = buffer_get_float32_auto(data, &ind);
+      mcconf.l_in_current_max = buffer_get_float32_auto(data, &ind)/2.0;
+      mcconf.l_in_current_min = buffer_get_float32_auto(data, &ind)/2.0;
       mcconf.l_abs_current_max = buffer_get_float32_auto(data, &ind);
       mcconf.l_min_erpm = buffer_get_float32_auto(data, &ind);
 
@@ -604,8 +604,8 @@ void commands_process_packet(unsigned char *data, unsigned int len,
 
     buffer_append_float32_auto(send_buffer, mcconf.l_current_max, &ind);
     buffer_append_float32_auto(send_buffer, mcconf.l_current_min, &ind);
-    buffer_append_float32_auto(send_buffer, mcconf.l_in_current_max, &ind);
-    buffer_append_float32_auto(send_buffer, mcconf.l_in_current_min, &ind);
+    buffer_append_float32_auto(send_buffer, mcconf.l_in_current_max*2, &ind);
+    buffer_append_float32_auto(send_buffer, mcconf.l_in_current_min*2, &ind);
     buffer_append_float32_auto(send_buffer, mcconf.l_abs_current_max, &ind);
     buffer_append_float32_auto(send_buffer, mcconf.l_min_erpm, &ind);
     buffer_append_float32_auto(send_buffer, mcconf.l_max_erpm, &ind);

@@ -20,7 +20,7 @@ This program is free software: you can redistribute it and/or modify
 
 // Firmware version
 #define FW_VERSION_MAJOR		23
-#define FW_VERSION_MINOR		44
+#define FW_VERSION_MINOR		45
 
 #include "datatypes.h"
 

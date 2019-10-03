@@ -1,4 +1,9 @@
 === FW 23.44 ===
+* Fixed bug with bluetooth
+* Fixed bug that caused battery current limit to be per motor and not total
+* 
+
+=== FW 23.44 ===
 * Fixed bug where disabling auto-shutdown also disabled the power switch from powering off
 * Patched bug with abs_over_current_fault being triggered from momentary spikes on ADC lines
 * Added some level of write protection for motor config by requiring that the motor config packet have correct length
