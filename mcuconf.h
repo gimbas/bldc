@@ -251,7 +251,7 @@ m    ChibiOS - Copyright (C) 2006..2015 Giovanni Di Sirio
 #define STM32_SERIAL_USE_UART4              FALSE
 #define STM32_SERIAL_USE_UART5              FALSE
 #define STM32_SERIAL_USE_USART6             TRUE
-#define STM32_SERIAL_USART1_PRIORITY        3
+#define STM32_SERIAL_USART1_PRIORITY        12
 #define STM32_SERIAL_USART2_PRIORITY        12
 #define STM32_SERIAL_USART3_PRIORITY        12
 #define STM32_SERIAL_UART4_PRIORITY         12

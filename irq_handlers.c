@@ -80,7 +80,7 @@ CH_IRQ_HANDLER(HW_ENC_TIM_ISR_VEC2) {
     }
 }
 
-/*CH_IRQ_HANDLER(TIM2_IRQHandler) {
+CH_IRQ_HANDLER(TIM2_IRQHandler) {
     if (TIM_GetITStatus(TIM2, TIM_IT_CC2) != RESET) {
         mcpwm_foc_tim_sample_int_handler();
 
@@ -88,9 +88,9 @@ CH_IRQ_HANDLER(HW_ENC_TIM_ISR_VEC2) {
         TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
     }
     TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
-}*/
+}
 
-
+/*
 CH_IRQ_HANDLER(TIM5_IRQHandler) {
     if (TIM_GetITStatus(TIM5, TIM_IT_CC2) != RESET) {
         mcpwm_foc_tim_sample_int_handler();
@@ -100,6 +100,7 @@ CH_IRQ_HANDLER(TIM5_IRQHandler) {
     }
     TIM_ClearITPendingBit(TIM5, TIM_IT_CC2);
 }
+*/
 
 #else
 CH_IRQ_HANDLER(TIM8_CC_IRQHandler) {

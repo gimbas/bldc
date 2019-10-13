@@ -1,7 +1,10 @@
-=== FW 23.44 ===
+=== FW 23.46 ===
+* Reverted change to bluetooth
+* Adjusted strategy for alternating both motors during control
+
+=== FW 23.45 ===
 * Fixed bug with bluetooth
 * Fixed bug that caused battery current limit to be per motor and not total
-* 
 
 === FW 23.44 ===
 * Fixed bug where disabling auto-shutdown also disabled the power switch from powering off
