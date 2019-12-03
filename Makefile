@@ -90,7 +90,7 @@ endif
 #
 
 # Define project name here
-PROJECT = UNITY
+PROJECT = UNITY_INTERBOT
 
 # Imported source files and paths
 CHIBIOS = ChibiOS_3.0.5

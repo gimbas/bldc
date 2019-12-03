@@ -199,6 +199,11 @@ void commands_process_packet(unsigned char *data, unsigned int len,
     commands_send_packet(send_buffer, ind);
     break;
 
+  case COMM_CLR_TACH:
+    mc_interface_get_tachometer_value(true);
+    mc_interface_get_tachometer_value2(true);
+    break;
+
   case COMM_SET_DUTY:
     ind = 0;
     cmd1 = (float)buffer_get_int32(data, &ind) / 100000.0;
